@@ -15,6 +15,11 @@ const addItem = () => {
     console.log(items.value);
   }
 };
+
+const toggleItem = (item) => {
+  item.completed = !item.completed;
+  console.log(item.completed);
+}
 </script>
 
 <template>
@@ -24,6 +29,7 @@ const addItem = () => {
 
   <ul>
     <li v-for="item in items" :key="item.id">
+      <input type="checkbox" :checked="item.completed" @change="toggleItem(item)" />
       {{ item.text }}
     </li>
   </ul>
