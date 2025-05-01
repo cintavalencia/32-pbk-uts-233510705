@@ -20,6 +20,10 @@ const toggleItem = (item) => {
   item.completed = !item.completed;
   console.log(item.completed);
 }
+
+const removeItem = (item) => {
+  items.value = items.value.filter(i => i !== item);
+}
 </script>
 
 <template>
@@ -31,6 +35,7 @@ const toggleItem = (item) => {
     <li v-for="item in items" :key="item.id">
       <input type="checkbox" :checked="item.completed" @change="toggleItem(item)" />
       {{ item.text }}
+      <button @click="removeItem(item)">Hapus</button>
     </li>
   </ul>
 </template>
