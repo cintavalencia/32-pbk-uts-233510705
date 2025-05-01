@@ -1,8 +1,9 @@
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 const items = ref([]);
 const newItem = ref('');
+const filter = ref('all');
 
 const addItem = () => {
   if (newItem.value !== '') {
@@ -24,15 +25,31 @@ const toggleItem = (item) => {
 const removeItem = (item) => {
   items.value = items.value.filter(i => i !== item);
 }
+
+const filteredItems = computed(() => {
+  if (filter.value === 'all') {
+    return items.value;
+  } else if (filter.value === 'completed') {
+    return items.value.filter(item => item.completed);
+  } else {
+    return items.value.filter(item => !item.completed);
+  }
+})
+
 </script>
 
 <template>
   <h1 class="text-red-500">todo list</h1>
   <input type="text" v-model="newItem" @keyup.enter="addItem" />
   <button @click="addItem">Tambah</button>
+  <select v-model="filter">
+    <option value="all">Semua</option>
+    <option value="completed">Selesai</option>
+    <option value="uncompleted">Belum Selesai</option>
+  </select>
 
   <ul>
-    <li v-for="item in items" :key="item.id">
+    <li v-for="item in filteredItems" :key="item.id">
       <input type="checkbox" :checked="item.completed" @change="toggleItem(item)" />
       {{ item.text }}
       <button @click="removeItem(item)">Hapus</button>
